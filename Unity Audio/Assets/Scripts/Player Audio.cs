@@ -6,23 +6,63 @@ using UnityEngine.Audio;
 public class PlayerAudio : MonoBehaviour
 {
     public AudioSource audioSource;
-    public AudioMixerGroup outdoorAmbientMixer;
-    public AudioMixerGroup indoorAmbientMixer;
+    public AudioMixerSnapshot outdoor;
+    public AudioMixerSnapshot indoor;
+    public float transitionDuracion = 1.0f;
 
     // Start is called before the first frame update
     void Start()
     {
-        if (audioSource == null)
+        if (audioSource == null || outdoor == null || indoor == null)
         {
-            Debug.LogError("No se ha asignado un AudioSource.");
+            Debug.LogError("No AudioSource or Snapshot asigned.");
             return;
         }
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        audioSource = GetComponent<AudioSource>();
+        
+    }
+
+    public void StartTransicion(string location)
+    {
+        if(location == "Indoor")
+        {
+            StartCoroutine(TransitiontoIndoor());
+        }
+        else
+        {
+            StartCoroutine(TransitiontoOutdoor());
+        }
+        
+    }
+
+    IEnumerator TransitiontoIndoor()
+    {
+        // Inicia la transición hacia el Snapshot2
+        indoor.TransitionTo(transitionDuracion);
+
+        // Espera la duración de la transición
+        yield return new WaitForSeconds(transitionDuracion);
+
+        // Restaura el AudioMixer al Snapshot1
+        outdoor.TransitionTo(0f);
+    }
+
+    IEnumerator TransitiontoOutdoor()
+    {
+        // Inicia la transición hacia el Snapshot2
+        outdoor.TransitionTo(transitionDuracion);
+
+        // Espera la duración de la transición
+        yield return new WaitForSeconds(transitionDuracion);
+
+        // Restaura el AudioMixer al Snapshot1
+        indoor.TransitionTo(0f);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -30,7 +70,7 @@ public class PlayerAudio : MonoBehaviour
         if(other.tag == "Indoor")
         {
             //Cambiar el mixer
-            audioSource.outputAudioMixerGroup = indoorAmbientMixer;
+            StartTransicion(other.tag);
             Debug.Log("Indoor");
         }
     }
@@ -39,7 +79,7 @@ public class PlayerAudio : MonoBehaviour
         if (other.tag == "Indoor")
         {
             //Cambiar el mixer
-            audioSource.outputAudioMixerGroup = outdoorAmbientMixer;
+            StartTransicion(other.tag);
             Debug.Log("Outdoor");
         }
     }
