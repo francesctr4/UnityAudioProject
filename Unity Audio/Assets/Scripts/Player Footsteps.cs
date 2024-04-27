@@ -8,13 +8,18 @@ using UnityEngine.Audio;
 public class PlayerFootsteps : MonoBehaviour
 {
     public AudioSource audioSource;
-    public AudioClip[] footstepClips;
+
+    public AudioClip[] concreteFootstepClips;
+    public AudioClip[] metalFootstepClips;
+
     bool toggleFootstepClips = false;
 
     public float walkTiming = 0.35f;
     public float runTiming = 0.2f;
 
     private float currentTime;
+
+    public GroundDetector groundDetector;
 
     [HideInInspector]
     public enum PlayerState
@@ -107,7 +112,15 @@ public class PlayerFootsteps : MonoBehaviour
 
     void PlayFootstepSound()
     {
-        audioSource.PlayOneShot(footstepClips[Convert.ToInt32(toggleFootstepClips)]);
+        if (groundDetector.groundType == "Metal")
+        {
+            audioSource.PlayOneShot(metalFootstepClips[Convert.ToInt32(toggleFootstepClips)]);     
+        }
+        else
+        {
+            audioSource.PlayOneShot(concreteFootstepClips[Convert.ToInt32(toggleFootstepClips)]);
+        }
+
         toggleFootstepClips = !toggleFootstepClips;
     }
 
