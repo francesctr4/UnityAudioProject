@@ -6,8 +6,8 @@ using UnityEngine.Audio;
 public class PlayerAudio : MonoBehaviour
 {
     public AudioSource audioSource;
-    public AudioMixerGroup ambientMixer;
-    public AudioMixerGroup ambientIndoorMixer;
+    public AudioMixerGroup outdoorAmbientMixer;
+    public AudioMixerGroup indoorAmbientMixer;
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +30,7 @@ public class PlayerAudio : MonoBehaviour
         if(other.tag == "Indoor")
         {
             //Cambiar el mixer
-            audioSource.outputAudioMixerGroup = ambientIndoorMixer;
+            audioSource.outputAudioMixerGroup = indoorAmbientMixer;
             Debug.Log("Indoor");
         }
     }
@@ -39,7 +39,7 @@ public class PlayerAudio : MonoBehaviour
         if (other.tag == "Indoor")
         {
             //Cambiar el mixer
-            audioSource.outputAudioMixerGroup = ambientMixer;
+            audioSource.outputAudioMixerGroup = outdoorAmbientMixer;
             Debug.Log("Outdoor");
         }
     }
