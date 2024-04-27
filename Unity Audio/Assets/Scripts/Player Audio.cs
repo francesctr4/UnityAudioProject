@@ -8,7 +8,7 @@ public class PlayerAudio : MonoBehaviour
     public AudioSource audioSource;
     public AudioMixerSnapshot outdoor;
     public AudioMixerSnapshot indoor;
-    public float transitionDuracion = 1.0f;
+    public float transitionDuration = 0.0002f;
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +30,7 @@ public class PlayerAudio : MonoBehaviour
 
     public void StartTransicion(string location)
     {
-        if(location == "Indoor")
+        if (location == "Indoor")
         {
             StartCoroutine(TransitiontoIndoor());
         }
@@ -44,25 +44,19 @@ public class PlayerAudio : MonoBehaviour
     IEnumerator TransitiontoIndoor()
     {
         // Inicia la transición hacia el Snapshot2
-        indoor.TransitionTo(transitionDuracion);
+        indoor.TransitionTo(transitionDuration);
 
         // Espera la duración de la transición
-        yield return new WaitForSeconds(transitionDuracion);
-
-        // Restaura el AudioMixer al Snapshot1
-        outdoor.TransitionTo(0f);
+        yield return new WaitForSeconds(transitionDuration);
     }
 
     IEnumerator TransitiontoOutdoor()
     {
         // Inicia la transición hacia el Snapshot2
-        outdoor.TransitionTo(transitionDuracion);
+        outdoor.TransitionTo(transitionDuration);
 
         // Espera la duración de la transición
-        yield return new WaitForSeconds(transitionDuracion);
-
-        // Restaura el AudioMixer al Snapshot1
-        indoor.TransitionTo(0f);
+        yield return new WaitForSeconds(transitionDuration);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -79,8 +73,9 @@ public class PlayerAudio : MonoBehaviour
         if (other.tag == "Indoor")
         {
             //Cambiar el mixer
-            StartTransicion(other.tag);
+            StartTransicion("Outdoor");
             Debug.Log("Outdoor");
+
         }
     }
 }
