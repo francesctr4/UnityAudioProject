@@ -27,15 +27,13 @@ public class FootstepsAudio : MonoBehaviour
         if(other.tag == "Untagged")
         {
             //Audio de asfalto
-            rngfootsep = Random.Range(0, concreteFootsteps.Length);
-            audioSource.PlayOneShot(concreteFootsteps[rngfootsep]);
+            audioSource.Play();
         }
 
         if (other.tag == "Metal")
         {
             //Audio de metal
-            Random.Range(0, metalFootsteps.Length);
-            audioSource.PlayOneShot(metalFootsteps[rngfootsep]);
+            audioSource.Play();
         }
     }
 }
