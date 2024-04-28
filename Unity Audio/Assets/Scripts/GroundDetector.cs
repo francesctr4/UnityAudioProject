@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GroundDetector : MonoBehaviour
 {
+    [HideInInspector]
     public string groundType;
 
     // Start is called before the first frame update
