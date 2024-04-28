@@ -87,7 +87,7 @@ public class PlayerFootsteps : MonoBehaviour
 
                 Debug.Log("WALK");
 
-                if (currentTime <= 0.0f)
+                if (currentTime <= 0.0f && groundDetector.grounded)
                 {
                     PlayFootstepSound();
                     currentTime = walkTiming;
@@ -99,7 +99,7 @@ public class PlayerFootsteps : MonoBehaviour
 
                 Debug.Log("RUN");
 
-                if (currentTime <= 0.0f)
+                if (currentTime <= 0.0f && groundDetector.grounded)
                 {
                     PlayFootstepSound();
                     currentTime = runTiming;
