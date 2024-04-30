@@ -12,6 +12,9 @@ public class PlayerFootsteps : MonoBehaviour
     public AudioClip[] concreteFootstepClips;
     public AudioClip[] metalFootstepClips;
 
+    private bool isJumping;
+    public AudioClip jumpClip;
+
     bool toggleFootstepClips = false;
 
     public float walkTiming = 0.35f;
@@ -26,7 +29,8 @@ public class PlayerFootsteps : MonoBehaviour
     {
         IDLE,
         WALK,
-        RUN
+        RUN,
+        JUMP
     }
 
     [HideInInspector]
@@ -38,6 +42,7 @@ public class PlayerFootsteps : MonoBehaviour
         currentTime = 0.0f;
         currentState = PlayerState.IDLE;
         audioSource = GetComponent<AudioSource>();
+        isJumping = false;
     }
 
     // Update is called once per frame
@@ -71,6 +76,13 @@ public class PlayerFootsteps : MonoBehaviour
         {
             currentState = PlayerState.IDLE;
         }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            currentState = PlayerState.JUMP;
+            isJumping = true;
+        }
+
     }
 
     void PlayerStateManagement()
@@ -107,6 +119,17 @@ public class PlayerFootsteps : MonoBehaviour
 
                 break;
 
+            case PlayerState.JUMP:
+
+                Debug.Log("JUMP");
+
+                if (isJumping)
+                {
+                    audioSource.PlayOneShot(jumpClip);
+                    isJumping = false;
+                }
+
+                break;
         }
     }
 
